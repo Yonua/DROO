@@ -1,14 +1,19 @@
-using Flux
+using TensorBoardLogger, Logging, Random
 
-h = rand(Float32,2,3)
+lg=TBLogger("tensorboard_logs/run", min_level=Logging.Info)
 
-m = rand(Float32,2,3)
+struct sample_struct first_field; other_field; end
 
-DNN = Chain(
-    x->transpose(x),
-    Dense(3,12,relu),
-    Dense(12,8,relu),
-    Dense(8,3,sigmoid),
-    x->transpose(x)
-)
-Flux.train!((x,y)->Flux.Losses.mse(DNN(x),y),Flux.params(DNN),[(h,m)],Flux.Optimise.ADAM())
+with_logger(lg) do
+    for i=1:100
+        x0          = 0.5+i/30; s0 = 0.5/(i/20);
+        edges       = collect(-5:0.1:5)
+        centers     = collect(edges[1:end-1] .+0.05)
+        histvals    = [exp(-((c-x0)/s0)^2) for c=centers]
+        data_tuple  = (edges, histvals)
+        data_struct = sample_struct(i^2, i^1.5-0.3*i)
+
+
+        @info "test" i=i
+    end
+end
