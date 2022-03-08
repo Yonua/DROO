@@ -17,4 +17,4 @@ board
 julia: 34 s
 python: 7 m
 
-![](https://secure2.wostatic.cn/static/5FjWMcXsPUfH1YnbZW8N1C/image.png)
+![](./result.png)
